@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.url">jdbc:mysql://localhost:3306/zadanieVaadin</property>
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password">root</property>
+        <property name="hbm2ddl.auto">create</property>
+        <property name="show_sql">true</property>
+
+        <mapping class="domain.Currency"/>
+
+        <!--<mapping class="com.hibernate.domain.Person"/>
+        <mapping class="com.hibernate.domain.composition.Car"/>
+
+        <mapping class="com.hibernate.domain.many_to_one.Author"/>
+        <mapping class="com.hibernate.domain.many_to_one.Book"/>
+
+        <mapping class="com.hibernate.domain.many_to_one_bidirectional.Team"/>
+        <mapping class="com.hibernate.domain.many_to_one_bidirectional.Player"/>-->
+    </session-factory>
+</hibernate-configuration>
