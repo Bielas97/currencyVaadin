@@ -15,8 +15,6 @@ import java.util.Optional;
 public class CurrencyDaoImpl implements CurrencyDao {
     private SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
-
-
     @Override
     public void addCurrency(Currency currency) {
         Session session = sessionFactory.openSession();
