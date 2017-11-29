@@ -1,8 +1,9 @@
-package daoImpl;
+package com.zadanieVaadin.daoImpl;
 
-import dao.CurrencyDao;
-import domain.Currency;
+import com.zadanieVaadin.dao.CurrencyDao;
+import com.zadanieVaadin.domain.Currency;
 import lombok.NoArgsConstructor;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -127,6 +128,34 @@ public class CurrencyDaoImpl implements CurrencyDao {
             tx. begin();
 
             currencyOptional = Optional.of(session.get(Currency.class, id));
+
+            tx.commit();
+        } catch (Exception e){
+            if( tx != null){
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            if(session != null){
+                session.close();
+            }
+        }
+        return currencyOptional;
+    }
+
+    @Override
+    public Optional<Currency> getCurrencyByCode(String code) {
+        Session session = sessionFactory.openSession();
+
+        Transaction tx = session.getTransaction();
+        Optional<Currency> currencyOptional = null;
+        try{
+            tx. begin();
+
+            Query query = session.createQuery("select c from Currency c where c.code = :code");
+            query.setParameter("code", code);
+            List<Currency> list = query.list();
+            currencyOptional = Optional.of(list.get(0));
 
             tx.commit();
         } catch (Exception e){

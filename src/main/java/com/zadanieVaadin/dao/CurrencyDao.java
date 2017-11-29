@@ -1,6 +1,6 @@
-package dao;
+package com.zadanieVaadin.dao;
 
-import domain.Currency;
+import com.zadanieVaadin.domain.Currency;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,4 +11,5 @@ public interface CurrencyDao {
     void deleteCurrency(Long id);
     List<Currency> getAll();
     Optional<Currency> getCurrencyById(Long id);
+    Optional<Currency> getCurrencyByCode(String code);
 }

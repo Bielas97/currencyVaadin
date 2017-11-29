@@ -1,6 +1,6 @@
-package nbp;
+package com.zadanieVaadin.nbp;
 
-import domain.Currency;
+import com.zadanieVaadin.domain.Currency;
 import lombok.Data;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -20,7 +20,11 @@ import java.util.List;
 public class Table {
     private List<Currency> currencyList = new ArrayList<>();
 
-    private final String URL = "http://api.nbp.pl/api/exchangerates/tables/A/";
+    private final String URL = "http://api.nbp.pl/api/exchangerates/tables/A/last/2";
+
+    private String dateOfPublicationFirstTable;
+
+    private String dateOfPublicationSecondTable;
 
     private void setTable(String link){
         try {
@@ -35,6 +39,14 @@ public class Table {
                     for(Object ob : jsonArray){
                         JSONObject jObject = (JSONObject) ob;
                         JSONArray table = (JSONArray) jObject.get("rates");
+                        //wyswietlanie
+                        System.out.println(jObject);
+                        if(dateOfPublicationFirstTable == null){
+                            dateOfPublicationFirstTable = (String) jObject.get("effectiveDate");
+                        }
+                        else {
+                            dateOfPublicationSecondTable = (String) jObject.get("effectiveDate");
+                        }
                         for (Object ob2 : table)
                         {
                             Currency currency = new Currency();
@@ -43,9 +55,16 @@ public class Table {
                             currency.setCode((String) job.get("code"));
                             currency.setMid((Double) job.get("mid"));
                             currency.setCurrency((String) job.get("currency"));
+                            if(dateOfPublicationSecondTable == null){
+                                currency.setDateOfPublication(dateOfPublicationFirstTable);
+                            }
+                            if(currency.getDateOfPublication() == null){
+                                currency.setDateOfPublication(dateOfPublicationSecondTable);
+                            }
 
                             currencyList.add(currency);
                         }
+
                     }
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -62,7 +81,6 @@ public class Table {
 
     public Table(){
         setTable(URL);
-        System.out.println(currencyList);
     }
 
     public Table(String url){

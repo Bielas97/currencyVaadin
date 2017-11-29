@@ -1,10 +1,11 @@
-package domain;
+package com.zadanieVaadin.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -21,4 +22,5 @@ public class Currency {
     private String code;
     private Double mid;
     private String currency;
+    private String dateOfPublication;
 }
