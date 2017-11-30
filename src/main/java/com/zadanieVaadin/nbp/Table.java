@@ -24,7 +24,7 @@ public class Table {
 
     private String dateOfPublicationFirstTable;
 
-    private String dateOfPublicationSecondTable;
+    private String dateOfPublicationToday;
 
     private void setTable(String link){
         try {
@@ -40,12 +40,12 @@ public class Table {
                         JSONObject jObject = (JSONObject) ob;
                         JSONArray table = (JSONArray) jObject.get("rates");
                         //wyswietlanie
-                        System.out.println(jObject);
+                        //System.out.println("-------------------------->" + jObject);
                         if(dateOfPublicationFirstTable == null){
                             dateOfPublicationFirstTable = (String) jObject.get("effectiveDate");
                         }
                         else {
-                            dateOfPublicationSecondTable = (String) jObject.get("effectiveDate");
+                            dateOfPublicationToday = (String) jObject.get("effectiveDate");
                         }
                         for (Object ob2 : table)
                         {
@@ -55,11 +55,11 @@ public class Table {
                             currency.setCode((String) job.get("code"));
                             currency.setMid((Double) job.get("mid"));
                             currency.setCurrency((String) job.get("currency"));
-                            if(dateOfPublicationSecondTable == null){
+                            if(dateOfPublicationToday == null){
                                 currency.setDateOfPublication(dateOfPublicationFirstTable);
                             }
                             if(currency.getDateOfPublication() == null){
-                                currency.setDateOfPublication(dateOfPublicationSecondTable);
+                                currency.setDateOfPublication(dateOfPublicationToday);
                             }
 
                             currencyList.add(currency);
@@ -89,5 +89,6 @@ public class Table {
 
     public static void main(String[] args) {
         Table t = new Table();
+        System.out.println(t.getCurrencyList());
     }
 }
