@@ -171,4 +171,32 @@ public class CurrencyDaoImpl implements CurrencyDao {
         return currencyOptional;
     }
 
+    @Override
+    public Optional<Currency> getCurrencyByCurrency(String c) {
+        Session session = sessionFactory.openSession();
+
+        Transaction tx = session.getTransaction();
+        Optional<Currency> currencyOptional = null;
+        try{
+            tx. begin();
+
+            Query query = session.createQuery("select c from Currency c where c.currency = :c");
+            query.setParameter("c", c);
+            List<Currency> list = query.list();
+            currencyOptional = Optional.of(list.get(0));
+
+            tx.commit();
+        } catch (Exception e){
+            if( tx != null){
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            if(session != null){
+                session.close();
+            }
+        }
+        return currencyOptional;
+    }
+
 }

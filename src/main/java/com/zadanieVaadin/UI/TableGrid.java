@@ -34,7 +34,8 @@ public class TableGrid {
             return "highlight-red";
         });*/
 
-        currencyTable.setWidth("900");
+        currencyTable.setWidth("700");
+
 
         return currencyTable;
     }
@@ -52,7 +53,7 @@ public class TableGrid {
         /*VerticalLayout verticalLayout = new VerticalLayout(currencyTable);
         verticalLayout.setWidth("1000");*/
 
-        currencyTable.setWidth("900");
+        currencyTable.setWidth("700");
 
         return currencyTable;
     }

@@ -12,8 +12,10 @@ import com.zadanieVaadin.dao.CurrencyDao;
 import com.zadanieVaadin.daoImpl.CurrencyDaoImpl;
 import com.zadanieVaadin.domain.Currency;
 import com.zadanieVaadin.nbp.Table;
+import com.zadanieVaadin.service.CurrencyService;
 
 import javax.servlet.annotation.WebServlet;
+import java.util.Map;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser window 
@@ -52,8 +54,12 @@ public class MyUI extends UI {
         grids.addComponent(TableGrid.createCurrencyTableToday(currencyDao));
         grids.addComponent(TableGrid.createCurrencyTableYesterday(currencyDao));
 
-        HorizontalLayout buttons = new HorizontalLayout();
+        layout.addComponent(grids);
 
+        CurrencyService cs = new CurrencyService(currencyDao);
+        cs.setComparedCurrencies();
+
+        System.out.println(cs.getThreeBestCurrencies());
 
         setContent(layout);
     }

@@ -87,8 +87,4 @@ public class Table {
         setTable(url);
     }
 
-    public static void main(String[] args) {
-        Table t = new Table();
-        System.out.println(t.getCurrencyList());
-    }
 }

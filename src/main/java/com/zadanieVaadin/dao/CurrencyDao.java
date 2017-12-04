@@ -12,4 +12,5 @@ public interface CurrencyDao {
     List<Currency> getAll();
     Optional<Currency> getCurrencyById(Long id);
     Optional<Currency> getCurrencyByCode(String code);
+    Optional<Currency> getCurrencyByCurrency(String c);
 }
