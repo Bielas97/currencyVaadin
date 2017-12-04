@@ -10,11 +10,19 @@ import java.util.stream.Collectors;
  * @author jbielawski on 30.11.2017 <jakub.bielawski@coi.gov.pl>
  */
 public class CurrencyService {
-    private Map<String, List<Double>> comparedCurrencies = new LinkedHashMap<String, List<Double>>();
+    private Map<String, List<Double>> comparedCurrencies = new LinkedHashMap<>();
     private CurrencyDao currencyDao;
+    private Map<String, Double> differentMids = new LinkedHashMap<>();
+
+    public CurrencyService() {
+    }
 
     public CurrencyService(CurrencyDao currencyDao) {
         this.currencyDao = currencyDao;
+    }
+
+    public Map<String, Double> getDifferentMids() {
+        return differentMids;
     }
 
     public CurrencyDao getCurrencyDao() {
@@ -30,7 +38,7 @@ public class CurrencyService {
         return comparedCurrencies;
     }
 
-    public void setComparedCurrencies() {
+    private void setComparedCurrencies() {
         List<Currency> temp = currencyDao.getAll();
 
         temp.stream().forEach(c -> {
@@ -45,12 +53,16 @@ public class CurrencyService {
         });
     }
 
+    public void setDifferentMids(){
+        for (Map.Entry<String, List<Double>> entry : comparedCurrencies.entrySet()) {
+            differentMids.put(entry.getKey(), entry.getValue().get(0) - entry.getValue().get(1));
+        }
+    }
+
     public List<Currency> getThreeBestCurrencies(){
         List<Currency> best = new ArrayList<>();
-        Map<String, Double> differentMids = new LinkedHashMap<>();
-        for (Map.Entry<String, List<Double>> entry : comparedCurrencies.entrySet()) {
-            differentMids.put(entry.getKey(), Math.abs(entry.getValue().get(0) - entry.getValue().get(1)));
-        }
+        setComparedCurrencies();
+        setDifferentMids();
         //sortowanie mapy po wartosci:
         differentMids = differentMids.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Collections.reverseOrder()))
@@ -64,5 +76,12 @@ public class CurrencyService {
         }
 
         return best;
+    }
+
+    public Boolean compareCurrenciesByMids(Currency c1, Currency c2){
+        if(c1.getMid() > c2.getMid()){
+            return false;
+        }
+        return true;
     }
 }

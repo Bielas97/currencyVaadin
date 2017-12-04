@@ -4,6 +4,7 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
@@ -28,12 +29,18 @@ import java.util.Map;
 public class MyUI extends UI {
 
     private final CurrencyDao currencyDao = new CurrencyDaoImpl();
+    private TableGrid tableGrid = new TableGrid();
     private Table table = new Table();
+    private CurrencyService currencyService = new CurrencyService(currencyDao);
+
 
     private Label createMostImportantCurrenciesLabel(){
         Label label = new Label();
 
-
+        label.setValue("3 kursy które odnotowały najwiekszy wzrost: ");
+        for (Currency c : currencyService.getThreeBestCurrencies()){
+            label.setValue(label.getValue() + c.getCurrency() + "; ");
+        }
 
         return label;
     }
@@ -51,15 +58,12 @@ public class MyUI extends UI {
         VerticalLayout layout = new VerticalLayout();
 
         HorizontalLayout grids = new HorizontalLayout();
-        grids.addComponent(TableGrid.createCurrencyTableToday(currencyDao));
-        grids.addComponent(TableGrid.createCurrencyTableYesterday(currencyDao));
+        grids.addComponent(tableGrid.createCurrencyTableToday(currencyDao));
+        grids.addComponent(tableGrid.createCurrencyTableYesterday(currencyDao));
 
         layout.addComponent(grids);
+        layout.addComponent(createMostImportantCurrenciesLabel());
 
-        CurrencyService cs = new CurrencyService(currencyDao);
-        cs.setComparedCurrencies();
-
-        System.out.println(cs.getThreeBestCurrencies());
 
         setContent(layout);
     }

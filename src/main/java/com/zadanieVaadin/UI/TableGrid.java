@@ -4,6 +4,7 @@ import com.vaadin.ui.Grid;
 import com.zadanieVaadin.dao.CurrencyDao;
 import com.zadanieVaadin.domain.Currency;
 import com.zadanieVaadin.nbp.Table;
+import com.zadanieVaadin.service.CurrencyService;
 
 import java.util.stream.Stream;
 
@@ -12,27 +13,25 @@ import java.util.stream.Stream;
  */
 public class TableGrid {
     private static Table table = new Table();
+   // private CurrencyService currencyService = new CurrencyService();
 
-    static Grid<Currency> createCurrencyTableToday(CurrencyDao currencyDao){
+    public Grid<Currency> createCurrencyTableToday(CurrencyDao currencyDao){
         Grid<Currency> currencyTable = new Grid<>(Currency.class);
 
-        currencyTable.setColumns("id", "code", "currency", "mid");
+        currencyTable.setColumns("id", "code", "currency");
+        //TODO kolory wierszy
+        currencyTable.addColumn("mid").setStyleGenerator(e1 -> {
+            if (e1.getMid() > 3.5) {
+                return "green";
+            }
+            return "red";
+        });
         currencyTable.setCaption("DZISIEJSZE KURSY");
 
         Stream<Currency> streamOfItems = currencyDao.getAll().stream().filter(e -> e.getDateOfPublication().equals(table.getDateOfPublicationToday()));
         currencyTable.setItems(streamOfItems);
+        currencyTable.setStyleGenerator(e -> "dead");
         currencyTable.setSizeFull();
-
-       /* VerticalLayout verticalLayout = new VerticalLayout(currencyTable);
-        verticalLayout.setWidth("1000");*/
-
-        /*currencyTable.setStyleGenerator(c -> {
-            if(c.getMid() > 1){
-                System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-                return "dead";
-            }
-            return "highlight-red";
-        });*/
 
         currencyTable.setWidth("700");
 
@@ -40,7 +39,7 @@ public class TableGrid {
         return currencyTable;
     }
 
-    static Grid<Currency> createCurrencyTableYesterday(CurrencyDao currencyDao){
+    public Grid<Currency> createCurrencyTableYesterday(CurrencyDao currencyDao){
         Grid<Currency> currencyTable = new Grid<>(Currency.class);
 
         currencyTable.setColumns("id", "code", "currency", "mid");
